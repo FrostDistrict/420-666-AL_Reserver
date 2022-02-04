@@ -1,8 +1,18 @@
+using Reserver.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<RestaurantContext>();
+
+using (var context = new RestaurantContext())
+{
+    context.Database.EnsureCreated();
+    context.SaveChanges();
+}
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

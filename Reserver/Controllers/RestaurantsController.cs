@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Reserver.Models;
@@ -29,7 +24,7 @@ namespace Reserver.Controllers
         }
 
         // GET: api/Restaurants/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
         {
             var restaurant = await _context.Restaurants.FindAsync(id);
@@ -43,7 +38,6 @@ namespace Reserver.Controllers
         }
 
         // PUT: api/Restaurants/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRestaurant(int id, Restaurant restaurant)
         {
@@ -74,7 +68,6 @@ namespace Reserver.Controllers
         }
 
         // POST: api/Restaurants
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Restaurant>> PostRestaurant(Restaurant restaurant)
         {

@@ -1,3 +1,4 @@
+using Reserver.DataContext;
 using Reserver.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,18 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<RestaurantContext>();
 
 using (var context = new RestaurantContext())
+{
+    context.Database.EnsureCreated();
+    context.SaveChanges();
+}
+
+using (var context = new UserContext())
+{
+    context.Database.EnsureCreated();
+    context.SaveChanges();
+}
+
+using (var context = new ReservationContext())
 {
     context.Database.EnsureCreated();
     context.SaveChanges();

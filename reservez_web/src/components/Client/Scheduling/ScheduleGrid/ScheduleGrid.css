@@ -1,0 +1,27 @@
+.schedule-container {
+    margin: auto;
+    width: 80%;
+    background-color: aliceblue;
+}
+
+.schedule-wrapper {
+    padding: 20px;
+}
+
+.article-grid-item {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    background-color: beige;
+    border: 2px solid black;
+}
+
+.schedule-grid {
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+}
+
+.article-grid-item:hover {
+    transform: scale(1.2);
+}

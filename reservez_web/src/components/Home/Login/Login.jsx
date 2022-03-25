@@ -1,10 +1,13 @@
 import React, {useState} from "react";
+import {Logon} from "../../../services/UserService";
 import './Login.css';
+import {useNavigate} from "react-router-dom";
 
 const Login = props => {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
-        email: '',
-        pwd: '',
+        Email: '',
+        Password: '',
     });
 
     const handleChange = (event) => {
@@ -21,6 +24,10 @@ const Login = props => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        Logon(form).then(success => {
+            if (success)
+                navigate('/dashboard');
+        });
     }
 
     return <>
@@ -33,16 +40,18 @@ const Login = props => {
                 <form className={'login-form'} onSubmit={handleSubmit}>
                     <div>
                         <input
-                            id={'email'}
+                            id={'Email'}
                             type={'email'}
-                            value={form.email}
+                            required
+                            value={form.Email}
                             onChange={handleChange}/>
                     </div>
                     <div>
                         <input
-                            id={'pwd'}
+                            id={'Password'}
                             type={'password'}
-                            value={form.pwd}
+                            required
+                            value={form.Password}
                             onChange={handleChange}/>
                     </div>
 

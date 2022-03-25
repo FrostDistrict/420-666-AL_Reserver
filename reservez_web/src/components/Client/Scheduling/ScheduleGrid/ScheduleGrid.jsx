@@ -3,7 +3,7 @@ import './ScheduleGrid.css';
 import {getDaysInMonth} from "../../../../services/DateService";
 import ScheduleGridItem from "./ScheduleGridItem";
 
-const ScheduleGrid = props => {
+const ScheduleGrid = () => {
     const today = new Date();
     const month = today.toLocaleString('default', { month: 'long' });
     const daysInMonth = getDaysInMonth(today.getFullYear(), today.getMonth());
@@ -11,7 +11,11 @@ const ScheduleGrid = props => {
     const getItems = () => {
         let items = [];
         for (let i = 0; i < daysInMonth; i++) {
-            items.push(<ScheduleGridItem date={i+1} isAvailable={'maybe'} />)
+            if (i+1 < today.getDate()){
+                items.push(<ScheduleGridItem date={i+1} isAvailable={'non disponible'} />)
+            }else{
+                items.push(<ScheduleGridItem date={i+1} isAvailable={'disponible'} />)
+            }
         }
         return items;
     }

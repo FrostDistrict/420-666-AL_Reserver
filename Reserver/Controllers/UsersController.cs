@@ -17,6 +17,26 @@ namespace Reserver.Controllers
             _context = context;
         }
 
+        [HttpPost("Login")]
+        public async Task<ActionResult<User>> Login(Credentials credentials)
+        {
+            if (credentials == null)
+                return BadRequest();
+
+            try
+            {
+                return await _context.GetUserByEmailAndPasswordAsync(credentials.Email, credentials.Password);
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest();
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
+
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()

@@ -1,0 +1,62 @@
+.article-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.article-wrapper {
+    padding: 100px 0px;
+}
+
+.article-title {
+    font-size: xxx-large;
+}
+
+.title-box:before {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 80%;
+    background: red;
+}
+
+.title-box:after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 80%;
+    margin-left: auto;
+    background: red;
+}
+
+.article-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-flow: row wrap;
+    padding: 100px;
+}
+
+.article-content > div {
+    width: 40%;
+    min-width: 500px;
+}
+
+.article-text {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.article-text > p {
+    font-size: larger;
+}
+
+.article-text > h3 {
+    font-size: xx-large;
+}
+
+.article-media img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}

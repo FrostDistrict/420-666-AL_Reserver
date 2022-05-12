@@ -1,5 +1,6 @@
 using Reserver.DataContext;
 using Reserver.Models;
+using Reserver.Util;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+
+
 
 var app = builder.Build();
 

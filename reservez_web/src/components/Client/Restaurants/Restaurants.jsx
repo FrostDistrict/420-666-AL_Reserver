@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {GetAllRestaurants} from "../../../services/RestaurantService";
-import {swalErr, toastErr} from "../../../services/AlertHelper";
+import {swalErr} from "../../../services/AlertHelper";
 import {useNavigate} from "react-router-dom";
 import {RestaurantBannerSimple} from "../../../assets/Images/ImageIndex";
 import ListItem from "../../Shared/ListItem/ListItem";

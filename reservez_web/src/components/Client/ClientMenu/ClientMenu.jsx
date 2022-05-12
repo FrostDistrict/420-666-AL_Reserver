@@ -26,18 +26,6 @@ const ClientMenu = () => {
                     link={'/restaurants'}
                     background={SettingsBanner}
                 />
-                <MenuItem
-                    title={'Paramètre'}
-                    desc={'Visionner et modifier vos préférences.'}
-                    link={'/restaurants'}
-                    background={SettingsBanner}
-                />
-                <MenuItem
-                    title={'Paramètre'}
-                    desc={'Visionner et modifier vos préférences.'}
-                    link={'/restaurants'}
-                    background={SettingsBanner}
-                />
             </div>
         </div>
     </>

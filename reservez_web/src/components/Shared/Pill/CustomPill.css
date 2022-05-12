@@ -1,0 +1,19 @@
+.pill-container{
+    border-radius: 25px;
+    padding: 10px 15px;
+    margin: 0 10px;
+}
+
+.pill-container:hover > .pill-text{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.pill-array-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+
+    margin: 5px;
+}

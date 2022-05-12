@@ -1,8 +1,8 @@
 ﻿namespace Reserver.Models;
 
-public class Schedule
+public class Schedule : BasePersistentObject
 {
-    private Dictionary<DayOfWeek, OpenFromUntil> _week;
+    private readonly Dictionary<DayOfWeek, OpenFromUntil> _week;
 
     public Schedule()
     {

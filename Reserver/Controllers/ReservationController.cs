@@ -17,14 +17,12 @@ public class ReservationController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Reservation
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
     {
         return await _context.Reservations.ToListAsync();
     }
 
-    // GET: api/Reservation/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Reservation>> GetReservation(int id)
     {
@@ -38,8 +36,6 @@ public class ReservationController : ControllerBase
         return reservation;
     }
 
-    // PUT: api/Reservation/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutReservation(int id, Reservation reservation)
     {
@@ -69,8 +65,6 @@ public class ReservationController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Reservation
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
     {
@@ -80,7 +74,6 @@ public class ReservationController : ControllerBase
         return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
     }
 
-    // DELETE: api/Reservation/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteReservation(int id)
     {

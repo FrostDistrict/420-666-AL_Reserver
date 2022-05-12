@@ -3,12 +3,25 @@
   margin: 0;
 
   width: 100%;
-  height: 100%;
+  height: 100vh;
 
   text-align: center;
+  scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5 {
   padding: 0;
   margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media only screen and (min-width: 2000px) {
+  .App {
+    width: 80%;
+    margin: auto;
+  }
 }

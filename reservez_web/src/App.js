@@ -9,6 +9,7 @@ import Home from "./components/Home/Home";
 import Dashboard from "./components/Shared/Dashboard/Dashboard";
 import Restaurants from "./components/Client/Restaurants/Restaurants";
 import RestaurantPage from "./components/Client/RestaurantPage/RestaurantPage";
+import Footer from "./components/Shared/Footer/Footer";
 
 
 function App() {

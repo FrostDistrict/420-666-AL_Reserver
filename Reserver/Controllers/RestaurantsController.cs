@@ -24,8 +24,8 @@ namespace Reserver.Controllers
         }
 
         // GET: api/Restaurants/5
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Restaurant>> GetRestaurant(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Restaurant>> GetRestaurant(string id)
         {
             var restaurant = await _context.Restaurants.FindAsync(id);
 
@@ -39,7 +39,7 @@ namespace Reserver.Controllers
 
         // PUT: api/Restaurants/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRestaurant(int id, Restaurant restaurant)
+        public async Task<IActionResult> PutRestaurant(string id, Restaurant restaurant)
         {
             if (id != restaurant.Id)
             {
@@ -79,7 +79,7 @@ namespace Reserver.Controllers
 
         // DELETE: api/Restaurants/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRestaurant(int id)
+        public async Task<IActionResult> DeleteRestaurant(string id)
         {
             var restaurant = await _context.Restaurants.FindAsync(id);
             if (restaurant == null)
@@ -93,7 +93,7 @@ namespace Reserver.Controllers
             return NoContent();
         }
 
-        private bool RestaurantExists(int id)
+        private bool RestaurantExists(string id)
         {
             return _context.Restaurants.Any(e => e.Id == id);
         }

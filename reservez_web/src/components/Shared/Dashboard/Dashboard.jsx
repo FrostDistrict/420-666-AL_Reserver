@@ -29,9 +29,6 @@ const Dashboard = () => {
             user &&
             <div className={'dashboard-container'}>
                 <div className={'dashboard-wrapper'}>
-                    <div className={'dashboard-header'}>
-                        <h2>{user.email}</h2>
-                    </div>
                     { getMenu() }
                 </div>
             </div>

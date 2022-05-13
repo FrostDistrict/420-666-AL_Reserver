@@ -1,29 +1,21 @@
-using Reserver.DataContext;
-using Reserver.Models;
-using Reserver.Util;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+using Reserver.DAL;
+using Reserver.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<RestaurantServices>();
+
 builder.Services.AddControllers();
-builder.Services.AddDbContext<RestaurantContext>();
-builder.Services.AddDbContext<UserContext>();
-builder.Services.AddDbContext<ReservationContext>();
 
-using (var context = new RestaurantContext())
-{
-    context.Database.EnsureCreated();
-    context.SaveChanges();
-}
+builder.Services.AddDbContext<EntityContext>();
 
-using (var context = new UserContext())
-{
-    context.Database.EnsureCreated();
-    context.SaveChanges();
-}
-
-using (var context = new ReservationContext())
+using (var context = new EntityContext())
 {
     context.Database.EnsureCreated();
     context.SaveChanges();

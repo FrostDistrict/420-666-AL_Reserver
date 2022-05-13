@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Reserver.DataContext;
+using Reserver.DAL;
+using Reserver.Exceptions;
 using Reserver.Models;
+using Reserver.Services;
+using Reserver.Util;
 
 namespace Reserver.Controllers
 {
@@ -9,11 +12,11 @@ namespace Reserver.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly UserServices _service;
 
-        public UsersController(UserContext context)
+        public UsersController(UserServices service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpPost("Login")]
@@ -21,7 +24,7 @@ namespace Reserver.Controllers
         {
             try
             {
-                return await _context.GetUserByEmailAndPasswordAsync(credentials.Email, credentials.Password);
+                return await _service.Login(credentials);
             }
             catch (ArgumentNullException)
             {
@@ -31,83 +34,6 @@ namespace Reserver.Controllers
             {
                 return NotFound();
             }
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
-        {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UserExists(string id)
-        {
-            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

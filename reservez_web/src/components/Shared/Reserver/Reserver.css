@@ -1,0 +1,23 @@
+.confirm-page {
+    background-color: aliceblue;
+
+    margin: 20px 0;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.confirm-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 15px;
+}
+
+.confirm-item > strong {
+    margin-left: 10px;
+}

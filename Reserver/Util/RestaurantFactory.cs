@@ -29,6 +29,7 @@ public static class RestaurantFactory
             Offers = o.Value<string>("Offres"),
             PriceIndex = o.Value<int>("EchellePrix"),
             Capacity = 25,
+            Schedule = "15-23",
             Owned = false,
         }) ?? Enumerable.Empty<Restaurant>();
     }

@@ -1,6 +1,6 @@
 ﻿namespace Reserver.Models;
 
-public abstract class BasePersistentObject
+public abstract class BaseEntity
 {
     public string Id { get; set; }
 
@@ -8,7 +8,7 @@ public abstract class BasePersistentObject
 
     public DateTime CreationDateTime { get; }
 
-    protected BasePersistentObject()
+    protected BaseEntity()
     {
         Id = GenerateId;
         TypeName = GetTypeName;

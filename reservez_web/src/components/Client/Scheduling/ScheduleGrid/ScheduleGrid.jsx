@@ -1,33 +1,39 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './ScheduleGrid.css';
-import {getDaysInMonth} from "../../../../services/DateService";
+import {GetDaysOfMonth, GetMonthName} from "../../../../services/DateService";
 import ScheduleGridItem from "./ScheduleGridItem";
+import {AiOutlineArrowLeft} from "@react-icons/all-files/ai/AiOutlineArrowLeft";
+import {AiOutlineArrowRight} from "@react-icons/all-files/ai/AiOutlineArrowRight";
 
-const ScheduleGrid = () => {
+const ScheduleGrid = (props) => {
+    const {select} = props;
+
     const today = new Date();
-    const month = today.toLocaleString('default', { month: 'long' });
-    const daysInMonth = getDaysInMonth(today.getFullYear(), today.getMonth());
+    const [targetDate, setTargetDate] = useState(today);
+    const [items, setItems] = useState(GetDaysOfMonth(today));
 
-    const getItems = () => {
-        let items = [];
-        for (let i = 0; i < daysInMonth; i++) {
-            if (i+1 < today.getDate()){
-                items.push(<ScheduleGridItem date={i+1} isAvailable={'non disponible'} />)
-            }else{
-                items.push(<ScheduleGridItem date={i+1} isAvailable={'disponible'} />)
-            }
-        }
-        return items;
+    const previousMonth = () => {
+        setTargetDate(new Date(targetDate.getFullYear(), targetDate.getMonth() - 1, targetDate.getDate()));
+        setItems(GetDaysOfMonth(targetDate));
+    }
+
+    const nextMonth = () => {
+        setTargetDate(new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate()));
+        setItems(GetDaysOfMonth(targetDate));
     }
 
     return <>
         <section className={'schedule-container'}>
             <div className={'schedule-wrapper'}>
                 <div className={'schedule-header'}>
-                    <h3>{month}</h3>
+                    <AiOutlineArrowLeft size={25} className={'schedule-arrow'} onClick={previousMonth} />
+                    <h3>{GetMonthName(targetDate)} - {targetDate.getFullYear()}</h3>
+                    <AiOutlineArrowRight size={25} className={'schedule-arrow'} onClick={nextMonth} />
                 </div>
                 <div className={'schedule-grid'}>
-                    {getItems()}
+                    {items.map((date, index) =>
+                        <ScheduleGridItem key={index} date={date} action={select}/>
+                    )}
                 </div>
             </div>
         </section>

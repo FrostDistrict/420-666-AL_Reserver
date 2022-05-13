@@ -1,6 +1,6 @@
 ﻿namespace Reserver.Models
 {
-    public class Restaurant : BasePersistentObject
+    public class Restaurant : BaseEntity
     {
         public string? Name { get; set; }
 
@@ -34,8 +34,10 @@
 
         public bool Owned { get; set; }
 
-        public string? ScheduleId { get; set; }
+        public string? UserId { get; set; }
 
-        public Schedule? Schedule { get; set; }
+        public User? User { get; set; }
+
+        public string Schedule { get; set; }
     }
 }

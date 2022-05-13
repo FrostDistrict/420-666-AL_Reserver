@@ -1,5 +1,5 @@
 import {methods, requestInit, urlBackend} from "./RequestHelper";
-import {swalErr, toast} from "./AlertHelper";
+import {swalErr, Toast} from "./AlertHelper";
 import {SaveUser} from "./StorageHelper";
 
 export async function Logon(credentials) {
@@ -8,7 +8,7 @@ export async function Logon(credentials) {
             return response.json().then(
                 body => {
                     if (response.ok) {
-                        toast.fire({text: 'Connexion Réussie'})
+                        Toast.fire({text: 'Connexion Réussie'})
                         SaveUser(body);
                     } else {
                         swalErr.fire({text: 'Connexion Impossible!'})

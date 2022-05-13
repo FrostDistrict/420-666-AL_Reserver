@@ -2,7 +2,20 @@
     margin: 20px auto;
     width: 80%;
     max-width: 1000px;
+    height: 950px;
     background-color: aliceblue;
+}
+
+.schedule-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 30px;
+    text-transform: capitalize;
+}
+
+.schedule-arrow {
+    cursor: pointer;
 }
 
 .schedule-wrapper {

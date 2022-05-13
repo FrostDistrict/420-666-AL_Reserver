@@ -1,14 +1,12 @@
 ﻿namespace Reserver.Models;
 
-public class Reservation
+public class Reservation : BaseEntity
 {
-    public int Id { get; set; }
-
-    public DateTime DateTime { get; set; }
+    public string Date { get; set; }
 
     public int? Amount { get; set; }
 
-    private string? RestaurantId { get; set; }
+    public string? RestaurantId { get; set; }
 
-    private string? ClientId { get; set; }
+    public string? ClientId { get; set; }
 }

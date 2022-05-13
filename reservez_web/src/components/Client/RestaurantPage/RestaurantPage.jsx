@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './RestaurantPage.css';
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -26,11 +26,19 @@ import {
 import Swal from "sweetalert2";
 import {Logon} from "../../../services/UserService";
 import {GetUser} from "../../../services/StorageHelper";
+import CustomCheckbox from "../../Shared/Input/CustomCheckbox";
+import {ReactSwal, Toast} from "../../../services/AlertHelper";
+import {ClaimRestaurantOwnership} from "../../../services/RestaurantService";
+import {GetScheduleFromString, IsOpen} from "../../../services/DateService";
+import {BiCalendar} from "@react-icons/all-files/bi/BiCalendar";
+import ScheduleGrid from "../Scheduling/ScheduleGrid/ScheduleGrid";
+import Reserver from "../../Shared/Reserver/Reserver";
 
 const RestaurantPage = () => {
     const {state} = useLocation();
     const navigate = useNavigate();
-    const restaurant = state.item;
+    const [restaurant, setRestaurant] = useState(state.item);
+    const [schedule, setSchedule] = useState(GetScheduleFromString(restaurant.schedule));
     const user = GetUser();
 
     useEffect(() => {
@@ -42,15 +50,17 @@ const RestaurantPage = () => {
     const GetPriceIndex = (index) => {
         let cash = [];
         for (let i = 0; i < index; i++){
-            cash.push(<GiMoneyStack color={'darkgreen'} size={25}/>)
+            cash.push(<GiMoneyStack key={i} color={'darkgreen'} size={25}/>)
         }
         return cash;
     }
 
     const ClaimThisRestaurant = () => {
-        Swal.fire({
+        ReactSwal.fire({
             title: 'Réclamez ce restaurant?',
             input: 'password',
+            inputLabel: 'Mot de passe:',
+            icon: "question",
             showCancelButton: true,
             confirmButtonText: 'Réclamez',
             preConfirm: (pwd) => {
@@ -62,11 +72,41 @@ const RestaurantPage = () => {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed && result.value) {
-                Swal.fire({
-                    title: 'Prouvez que vous êtes le propriétaire!'
-                });
+                ReactSwal.fire({
+                    title: 'Prouvez que vous êtes le propriétaire!',
+                    icon: 'warning',
+                    html:
+                        <CustomCheckbox inputId="checkbox-input">
+                            Je suis le propriétaire.
+                        </CustomCheckbox>,
+                    preConfirm: () => {
+                        return document.getElementById("checkbox-input").value;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed && result.value){
+                        ClaimRestaurantOwnership(user.id, restaurant.id)
+                            .then((result) => {
+                                if (result !== null){
+                                    setRestaurant(result)
+                                }
+                            });
+                    }
+                })
             }
         });
+    }
+
+    const Reserve = () => {
+        ReactSwal.fire({
+            title: 'Faites une réservation',
+            showCancelButton: true,
+            width: '90%',
+            heightAuto: false,
+            showConfirmButton: false,
+            showCloseButton: true,
+            html: <Reserver restaurantId={restaurant.id} />,
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then();
     }
 
     return <>
@@ -103,6 +143,12 @@ const RestaurantPage = () => {
                                 <a href={`tel:+1-${restaurant.phoneNumber}/`}><strong>{FormatPhoneNumber(restaurant.phoneNumber)}</strong></a>
                             </div>
                         }
+                        {(restaurant.schedule !== null) &&
+                            <div>
+                                <BiCalendar size={25}/>
+                                <strong style={{color: (IsOpen(schedule) ? 'green' : 'red')}}>{IsOpen(schedule) ? "Ouvert" : "Fermer"}</strong>
+                            </div>
+                        }
                         {(restaurant.capacity !== null && restaurant.capacity !== '') &&
                             <div>
                                 <HiUserGroup size={25}/>
@@ -119,7 +165,10 @@ const RestaurantPage = () => {
                 {restaurant.owned &&
                     <Banner
                         title={'Réservez maintenant!'}
-                        background={ReservedBanner}>
+                        accent={user.ownedRestaurants}
+                        background={ReservedBanner}
+                        action={Reserve}
+                    >
                     </Banner>
                 }
 
@@ -129,7 +178,9 @@ const RestaurantPage = () => {
                         accent={'Vous êtes le propriétaire?'}
                         background={SettingsBanner}
                         action={ClaimThisRestaurant}
-                    />
+                    >
+
+                    </Banner>
                 }
 
             </div>

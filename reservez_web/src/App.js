@@ -9,7 +9,8 @@ import Home from "./components/Home/Home";
 import Dashboard from "./components/Shared/Dashboard/Dashboard";
 import Restaurants from "./components/Client/Restaurants/Restaurants";
 import RestaurantPage from "./components/Client/RestaurantPage/RestaurantPage";
-import Footer from "./components/Shared/Footer/Footer";
+import MyRestaurants from "./components/Client/MyRestaurants/MyRestaurants";
+import MyReservations from "./components/Client/MyReservations/MesReservations";
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
         { path: "/dashboard", element: <Dashboard/> },
         { path: "/restaurants", element: <Restaurants/>},
         { path: "/restaurantPage", element: <RestaurantPage/>},
+        { path: "/myRestaurants", element: <MyRestaurants/>},
+        { path: "/myReservations", element: <MyReservations/>},
     ]);
 
   return (

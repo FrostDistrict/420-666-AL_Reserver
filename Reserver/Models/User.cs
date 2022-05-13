@@ -1,6 +1,6 @@
 ﻿namespace Reserver.Models;
 
-public class User : BasePersistentObject
+public class User : BaseEntity
 {
     public string? Email { get; set; }
 

@@ -1,7 +1,8 @@
-﻿#nullable disable
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Reserver.Exceptions;
 using Reserver.Models;
+using Reserver.Services;
+using Reserver.Util;
 
 namespace Reserver.Controllers
 {
@@ -9,93 +10,107 @@ namespace Reserver.Controllers
     [ApiController]
     public class RestaurantsController : ControllerBase
     {
-        private readonly RestaurantContext _context;
+        private readonly RestaurantServices _service;
 
-        public RestaurantsController(RestaurantContext context)
+        public RestaurantsController(RestaurantServices service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Restaurants
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
+        [HttpGet("MakeReservation")]
+        public async Task<ActionResult<Reservation>> MakeReservation(string restaurantId, string userId, string date, int amount)
         {
-            return await _context.Restaurants.ToListAsync();
-        }
-
-        // GET: api/Restaurants/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Restaurant>> GetRestaurant(string id)
-        {
-            var restaurant = await _context.Restaurants.FindAsync(id);
-
-            if (restaurant == null)
+            try
             {
-                return NotFound();
+                return Ok(await _service.MakeReservation(restaurantId, userId, date, amount));
             }
-
-            return restaurant;
-        }
-
-        // PUT: api/Restaurants/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRestaurant(string id, Restaurant restaurant)
-        {
-            if (id != restaurant.Id)
+            catch (ArgumentNullException)
             {
                 return BadRequest();
             }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
-            _context.Entry(restaurant).State = EntityState.Modified;
 
+        [HttpGet("TimeSlots")]
+        public async Task<ActionResult<IEnumerable<TimeSlotDto>>> GetTimeSlots(string restaurantId, string date)
+        {
             try
             {
-                await _context.SaveChangesAsync();
+                return Ok(await _service.GetAvailableTimeSlots(restaurantId, date));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ArgumentNullException)
             {
-                if (!RestaurantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest();
             }
-
-            return NoContent();
-        }
-
-        // POST: api/Restaurants
-        [HttpPost]
-        public async Task<ActionResult<Restaurant>> PostRestaurant(Restaurant restaurant)
-        {
-            _context.Restaurants.Add(restaurant);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRestaurant", new { id = restaurant.Id }, restaurant);
-        }
-
-        // DELETE: api/Restaurants/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRestaurant(string id)
-        {
-            var restaurant = await _context.Restaurants.FindAsync(id);
-            if (restaurant == null)
+            catch (ResourceNotFoundException)
             {
                 return NotFound();
             }
-
-            _context.Restaurants.Remove(restaurant);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (DateHasPassedException)
+            {
+                return BadRequest(new { message = ErrorMsgHelper.DateHasPassedError });
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
-        private bool RestaurantExists(string id)
+        [HttpGet("ClaimRestaurant")]
+        public async Task<ActionResult<Restaurant>> ClaimRestaurantOwnership(string userId, string restaurantId)
         {
-            return _context.Restaurants.Any(e => e.Id == id);
+            try
+            {
+                return await _service.ClaimRestaurantOwnership(userId, restaurantId);
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest();
+            }
+            catch (ResourceNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (RestaurantAlreadyOwnedException)
+            {
+                return BadRequest(new {message = ErrorMsgHelper.RestaurantAlreadyOwnedError});
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> GetRestaurants()
+        {
+            return Ok(await _service.GetRestaurants());
+        }
+
+        [HttpGet("Reservations")]
+        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetAllReservationsByUser(string userId)
+        {
+            try
+            {
+                return Ok(await _service.GetAllReservationsByUser(userId));
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("ByOwner")]
+        public ActionResult<IEnumerable<Restaurant>> GetRestaurantsByOwner(string userId)
+        {
+            try
+            {
+                return Ok(_service.GetAllRestaurantsByOwner(userId));
+            }
+            catch (ArgumentNullException)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -1,0 +1,16 @@
+.time-picker-container {
+    margin: 20px auto;
+    width: 80%;
+    background-color: aliceblue;
+    color: white;
+}
+
+.time-picker-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 20px;
+    margin: 5px;
+}

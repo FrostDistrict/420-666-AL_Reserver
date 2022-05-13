@@ -1,0 +1,48 @@
+.custom-checkbox-container {
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+
+    font-family: system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.custom-checkbox-container + .custom-checkbox-container {
+    margin-top: 1em;
+}
+
+.custom-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+
+    display: grid;
+    place-content: center;
+
+    font: inherit;
+    color: currentColor;
+
+    width: 1.15em;
+    height: 1.15em;
+
+    border: 0.1em solid currentColor;
+    border-radius: 0.2em;
+}
+
+.custom-checkbox::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em currentColor;
+
+    transform-origin: bottom left;
+    clip-path: polygon(14% 51%, 0 80%, 55% 100%, 100% 20%, 69% 0, 47% 74%);
+}
+
+.custom-checkbox:checked::before {
+    transform: scale(1);
+}
